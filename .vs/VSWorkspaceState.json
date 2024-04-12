@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\components",
+    "\\src\\config",
+    "\\src\\router",
+    "\\src\\store"
+  ],
+  "SelectedNode": "\\src\\components\\KeyVote.vue",
+  "PreviewInSolutionExplorer": false
+}
