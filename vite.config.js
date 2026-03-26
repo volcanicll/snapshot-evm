@@ -1,7 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-export default defineConfig({
+const githubPagesBase = "/snapshot-evm/";
+
+export default defineConfig(({ command }) => ({
+  base: command === "build" ? githubPagesBase : "/",
   plugins: [react()],
   build: {
     rollupOptions: {
@@ -18,11 +21,7 @@ export default defineConfig({
             return "react";
           }
 
-          if (
-            id.includes("ethers") ||
-            id.includes("@ethersproject/wallet") ||
-            id.includes("axios")
-          ) {
+          if (id.includes("ethers") || id.includes("axios")) {
             return "web3";
           }
 
@@ -31,4 +30,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));

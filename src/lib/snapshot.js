@@ -1,10 +1,10 @@
 import axios from "axios";
-import { ethers } from "ethers";
+import { BrowserProvider, JsonRpcProvider, Wallet, getAddress } from "ethers";
 
 const snapshotHubUrl = "https://hub.snapshot.org/graphql";
 const snapshotMessageUrl = "https://hub.snapshot.org/api/msg";
 const snapshotScoreUrl = "https://score.snapshot.org";
-const rpcProvider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/eth");
+const rpcProvider = new JsonRpcProvider("https://rpc.ankr.com/eth");
 
 function normalizeProposal(item, fallbackSpace) {
   return {
@@ -68,16 +68,16 @@ async function signVotePayload(account, payload, useMetamask) {
     }
 
     await window.ethereum.request({ method: "eth_requestAccounts" });
-    const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
-    return signer._signTypedData(domain, types, message);
+    const signer = await new BrowserProvider(window.ethereum).getSigner();
+    return signer.signTypedData(domain, types, message);
   }
 
-  const signer = new ethers.Wallet(account.privateKey, rpcProvider);
-  return signer._signTypedData(domain, types, message);
+  const signer = new Wallet(account.privateKey, rpcProvider);
+  return signer.signTypedData(domain, types, message);
 }
 
 function buildVotePayload(account, proposal) {
-  const checksumAddress = ethers.utils.getAddress(account.address);
+  const checksumAddress = getAddress(account.address);
   const isMultiChoice =
     proposal.type === "approval" || proposal.type === "ranked-choice";
 

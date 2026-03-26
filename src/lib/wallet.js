@@ -1,5 +1,4 @@
-import { Wallet } from "@ethersproject/wallet";
-import { ethers } from "ethers";
+import { BrowserProvider, Wallet } from "ethers";
 
 export function getWallet(privateKey) {
   return new Wallet(privateKey);
@@ -20,7 +19,7 @@ export async function getConnectedAddress(useMetamask, requestConnection = true)
   }
 
   try {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new BrowserProvider(window.ethereum);
     const accounts = await provider.send(
       requestConnection ? "eth_requestAccounts" : "eth_accounts",
       []
